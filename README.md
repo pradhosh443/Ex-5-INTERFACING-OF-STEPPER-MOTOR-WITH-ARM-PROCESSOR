@@ -57,12 +57,66 @@ Startuplpc17xx.s, main.c (t), delay.c (t), systemlpc17xx.c (t), gpio.c (t)
 Delay.h, stdutils.h, gp
 
 ## PROGRAM
+```
+#include<lpc17xx.h> #include "gpio.h" #define pin1 20
+#define pin2 21
+#define pin3 22
+#define pin4 23
+#define control LPC_GPIO1-
+>FIOPIN
+void cmotor1()
+{
+control |=(1<<pin1); control |=(1<<pin2); control &=~(1<<pin3); control &=~(1<<pin4);
 
+}
+void cmotor2()
+{
+control &=~(1<<pin1); control |=(1<<pin2); control |=(1<<pin3); control &=~(1<<pin4);
+
+}
+void cmotor3()
+{
+control &=~(1<<pin1); control &=~(1<<pin2); control |=(1<<pin3); control |=(1<<pin4);
+
+}
+
+void cmotor4()
+{
+control |=(1<<pin1); control &=~(1<<pin2); control &=~(1<<pin3); control |=(1<<pin4);
+}
+void delay_ms(unsigned int ms)
+{
+unsigned int i,j;
+
+for(i=0;i<ms;i++) for(j=0;j<20000;j++);
+}
+int main()
+{
+SystemInit();
+//Clock and PLL configuration LPC_PINCON->PINSEL3 = 0x000000;
+LPC_GPIO1->FIODIR
+=(1<<pin1)|(1<<pin2)|(1<<pin3)
+| (1<<pin4); while(1)
+{
+cmotor1(); delay_ms(50); cmotor2();
+
+delay_ms(50);
+cmotor3();
+
+delay_ms(50);
+cmotor4();
+
+delay_ms(50);
+}
+}
+```
 ## OUTPUT
+<img width="789" height="421" alt="image" src="https://github.com/user-attachments/assets/d8fd13d4-8fc4-4777-a444-f34a010a4e8e" />
+<img width="693" height="148" alt="image" src="https://github.com/user-attachments/assets/58e43282-c1b5-4d8a-a2a6-9216695b499c" />
+
 
 ## RESULT: 
 Thus interfacing STEPPER MOTOR with ARM processor LPC1768 is verified.
  
-
 
 
